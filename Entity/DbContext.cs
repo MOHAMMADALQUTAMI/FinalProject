@@ -15,15 +15,14 @@ namespace FinalProject.Entity
         }
         public DbSet<Food> Foods {get;set;}
         public DbSet<Shop> Shops {get;set;}
+        public DbSet<Category>categorys {get;set;}
+        public DbSet<SubCategory> subcategories {get;set;}
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {
             // builder.UseNpgsql("host=localhost ;port=5432; Database=FinalProject; username=postgres; password=xxxxxx ;IncludeErrorDetail=true;");
             builder.LogTo(Console.WriteLine);
         }
-        protected override void OnModelCreating(ModelBuilder builder)
-        {
-            base.OnModelCreating(builder);
-        } 
+      
 
     }
 }
