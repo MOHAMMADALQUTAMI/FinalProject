@@ -7,7 +7,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using FinalProject.Entity;
 
-namespace FinalProject.DAcess
+namespace FinalProject.DAccess
 
 {
     public class DbAccess : IdentityDbContext<User>

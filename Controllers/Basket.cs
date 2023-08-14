@@ -1,16 +1,14 @@
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Mvc;
 using FinalProject.Entity;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using FinalProject.DAcess;
+using FinalProject.DAccess;
 using FinalProject.VModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FinalProject.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]/[action]")]
     public class BasketController : ControllerBase
@@ -23,7 +21,9 @@ namespace FinalProject.Controllers
         }
 
 
-        [HttpGet("{Itemid}")]
+        [HttpGet]
+        [AllowAnonymous]
+
         public async Task<ActionResult<IEnumerable<BasketItemVM>>> AddItem(AddItemVM AddItemVM)
         {
             var basket = await _context.Baskets
@@ -60,7 +60,7 @@ namespace FinalProject.Controllers
                         basket.BasketItems.Add(newBasketItem);
                         await _context.SaveChangesAsync();
 
-                        return Ok(basket.BasketItems);
+                        return Ok(existingBasketItem);
                     }
                     else
                     {
@@ -98,7 +98,7 @@ namespace FinalProject.Controllers
 
                 _context.Baskets.Add(newbasket);
                 await _context.SaveChangesAsync();
-                return Ok("Basket Has Been Added");
+                return Ok(newbasket);
 
             }
         }
