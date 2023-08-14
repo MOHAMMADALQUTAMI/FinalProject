@@ -10,18 +10,20 @@ namespace FinalProject.Entity
 
 
 
-        public int Id { get; set; }
-        public int FoodId { get; set; }
-        public Food Food { get; set; }
+        public List<BasketItems> BasketItems { get; set; }
 
-        public int UserId { get; set; }
+        public string UserId { get; set; }
 
         public User User { get; set; }
 
-        public String Address { get; set; }
-        public int Quintity { get; set; }
-
         public DateTime DateAdded { get; set; }
+
+        public string Address { get; set; }
+
+        public int? Phone { get; set; }
+        public int status { get; set; }
+
+
 
 
     }
