@@ -6,111 +6,104 @@ using Microsoft.AspNetCore.Mvc;
 using FinalProject.Entity;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
-
+using FinalProject.DAcess;
+using FinalProject.VModels;
 
 namespace FinalProject.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]/[action]")]
     public class BasketController : ControllerBase
     {
-        private readonly FinalProject.Entity.DbContext _context;
+        private readonly DbAccess _context;
 
-        public BasketController(FinalProject.Entity.DbContext context)
+        public BasketController(DbAccess context)
         {
             _context = context;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Basket>>> GetBaskets()
+
+        [HttpGet("{Itemid}")]
+        public async Task<ActionResult<IEnumerable<BasketItemVM>>> AddItem(AddItemVM AddItemVM)
         {
-            return await _context.Baskets.Include(b => b.Food).ToListAsync();
-        }
+            var basket = await _context.Baskets
+                   .Include(b => b.BasketItems)
+                   .FirstOrDefaultAsync(b => b.status == 1 && b.UserId == AddItemVM.UserId);
 
-        [HttpGet("user/{userId}")]
-        public async Task<ActionResult<IEnumerable<Basket>>> GetBasketsByUserId(int userId)
-        {
-            var baskets = await _context.Baskets
-                .Where(b => b.UserId == userId)
-                .Include(b => b.Food)
-                .ToListAsync();
 
-            if (baskets == null || baskets.Count == 0)
+            if (basket != null)
             {
-                return NotFound();
-            }
+                //Basket Does  Exisit
 
-            return baskets;
-        }
 
-        [HttpPost]
-        public async Task<ActionResult<Basket>> PostBasket(Basket basket)
-        {
-            var existingBasketItem = await _context.Baskets
-                .FirstOrDefaultAsync(b => b.UserId == basket.UserId && b.FoodId == basket.FoodId);
-
-            if (existingBasketItem != null)
-            {
-                existingBasketItem.Quintity += basket.Quintity;
-                _context.Entry(existingBasketItem).State = EntityState.Modified;
-            }
-            else
-            {
-                _context.Baskets.Add(basket);
-            }
-
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetBasket", new { id = basket.Id }, basket);
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutBasket(int id, Basket basket)
-        {
-            if (id != basket.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(basket).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!BasketExists(id))
+                var existingBasketItem = basket.BasketItems
+                .FirstOrDefault(item => item.FoodId == AddItemVM.ItemId);
+                if (existingBasketItem != null)
                 {
-                    return NotFound();
+                    return Ok("Item already exists in the basket.");
                 }
                 else
                 {
-                    throw;
+
+                    var food = await _context.Foods.FindAsync(AddItemVM.ItemId);
+
+                    if (food != null)
+                    {
+                        var newBasketItem = new BasketItems
+                        {
+                            BasketId = basket.Id,
+                            FoodId = food.Id,
+                            Quantity = AddItemVM.Quantity,
+                            Price = food.Price
+                        };
+
+                        basket.BasketItems.Add(newBasketItem);
+                        await _context.SaveChangesAsync();
+
+                        return Ok(basket.BasketItems);
+                    }
+                    else
+                    {
+
+                        return NotFound("Food item not Available.");
+                    }
                 }
+
+
             }
-
-            return NoContent();
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteBasket(int id)
-        {
-            var basket = await _context.Baskets.FindAsync(id);
-            if (basket == null)
+            else
             {
-                return NotFound();
+                //Basket Does Not Exisit
+
+                var newbasket = new Basket
+                {
+                    UserId = AddItemVM.UserId,
+                    DateAdded = DateTime.Now,
+                    status = 1,
+                    BasketItems = new List<BasketItems>()
+                };
+
+                var food = await _context.Foods.FindAsync(AddItemVM.ItemId);
+                if (food != null)
+                {
+                    var basketitem = new BasketItems
+                    {
+                        BasketId = newbasket.Id,
+                        FoodId = food.Id,
+                        Quantity = AddItemVM.Quantity,
+                        Price = food.Price
+                    };
+                    _context.BasketItems.Add(basketitem);
+                }
+
+                _context.Baskets.Add(newbasket);
+                await _context.SaveChangesAsync();
+                return Ok("Basket Has Been Added");
+
             }
-
-            _context.Baskets.Remove(basket);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
         }
 
-        private bool BasketExists(int id)
-        {
-            return _context.Baskets.Any(b => b.Id == id);
-        }
+
+
     }
 }
