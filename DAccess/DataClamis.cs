@@ -9,9 +9,11 @@ namespace FinalProject.DAccess
     {
         // policies
         public const string AddItemPolicyName = "AddItem";
+        public const string AddFoodPolicyName = "AddFood";
 
         // claims
         public const string AddItemClaimName = "AddItem";
+        public const string AddFoodClaimName = "AddFood";
 
     }
 }

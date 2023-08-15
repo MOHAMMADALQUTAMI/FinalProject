@@ -28,7 +28,7 @@ namespace FinalProject.Controllers
         {
             var basket = await _context.Baskets
                    .Include(b => b.BasketItems)
-                   .FirstOrDefaultAsync(b => b.Status == 1 && b.UserId == AddItemVM.UserId);
+                   .SingleOrDefaultAsync(b => b.Status == 1 && b.UserId == AddItemVM.UserId);
 
 
             if (basket != null)
@@ -102,8 +102,6 @@ namespace FinalProject.Controllers
 
             }
         }
-
-
 
     }
 }
