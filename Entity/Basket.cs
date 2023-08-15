@@ -21,7 +21,7 @@ namespace FinalProject.Entity
         public string Address { get; set; }
 
         public int? Phone { get; set; }
-        public int status { get; set; }
+        public int Status { get; set; }
 
 
 
