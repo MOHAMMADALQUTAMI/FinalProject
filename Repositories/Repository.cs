@@ -10,9 +10,9 @@ namespace FinalProject.Repositories
     {
 
         private readonly DbSet<T> _dbSet;
-        protected readonly DAccess.DbAccess _context;
+        protected readonly DbAccess _context;
 
-        public Repository(DAccess.DbAccess context)
+        public Repository(DbAccess context)
         {
             _dbSet = context.Set<T>();
             _context = context;
