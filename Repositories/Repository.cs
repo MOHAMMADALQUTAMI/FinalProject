@@ -1,5 +1,6 @@
 using FinalProject.Entity;
 using Microsoft.EntityFrameworkCore;
+using FinalProject.DAccess;
 using System.Linq.Expressions;
 using System.Security.Principal;
 
@@ -7,11 +8,11 @@ namespace FinalProject.Repositories
 {
     public class Repository<T> : IRepository<T> where T : BaseEntity
     {
-        
-        private readonly DbSet<T> _dbSet;
-        protected readonly Entity.DbContext _context;
 
-        public Repository(Entity.DbContext context)
+        private readonly DbSet<T> _dbSet;
+        protected readonly DbAccess _context;
+
+        public Repository(DbAccess context)
         {
             _dbSet = context.Set<T>();
             _context = context;

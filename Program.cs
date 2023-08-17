@@ -1,15 +1,53 @@
+using FinalProject.Entity;
+using FinalProject.DAccess;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
 using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var config = builder.Configuration;
 builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<DbContext>(options =>
+builder.Services.AddDbContext<DbAccess>(options =>
 {
-   options.UseNpgsql(config.GetConnectionString("DefaultConnection"));
+    options.UseNpgsql(config.GetConnectionString("DefaultConnection"));
 });
+
+
+builder.Services.AddIdentity<User, IdentityRole>()
+    .AddEntityFrameworkStores<DbAccess>()
+    .AddDefaultTokenProviders();
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidIssuer = config["JwtSettings:Issuer"],
+        ValidAudience = config["JwtSettings:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JwtSettings:SecretKey"]!)),
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true
+    };
+});
+
+
+
+
+builder.Services.AddAuthorization(o =>
+{
+    o.AddPolicy(DataClamis.AddItemPolicyName, policy => policy.RequireClaim(DataClamis.AddItemClaimName));
+});
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -20,6 +58,8 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
 app.UseStaticFiles();
 app.UseRouting();
 
