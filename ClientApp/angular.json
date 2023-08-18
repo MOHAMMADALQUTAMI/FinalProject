@@ -34,9 +34,18 @@
 						],
 						"styles": [
 							"node_modules/bootstrap/dist/css/bootstrap.min.css",
-							"src/styles.scss"
+							"src/styles.scss",
+							"src/assets/css/style.min.css"
 						],
-						"scripts": []
+						"scripts": [
+							"src/assets/libsdasdasd/jquery/dist/jquery.min.js",
+							"src/assets/js/app.min.js",
+							"src/assets/js/app.init.js",
+							"src/assets/js/app-style-switcher.js",
+							"src/assets/js/sidebarmenu.js",
+							"src/assets/js/custom.min.js",
+							"src/assets/libsdasdasd/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"
+						]
 					},
 					"configurations": {
 						"production": {

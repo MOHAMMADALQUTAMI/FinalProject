@@ -12,7 +12,6 @@ namespace FinalProject.VModels
         public int FoodId { get; set; }
         public FoodVM Food { get; set; }
         public int Quantity { get; set; }
-
         public float Price { get; set; }
     }
 }

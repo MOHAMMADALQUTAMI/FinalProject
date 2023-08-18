@@ -24,7 +24,5 @@ namespace FinalProject.Entity
         public int Status { get; set; }
 
 
-
-
     }
 }

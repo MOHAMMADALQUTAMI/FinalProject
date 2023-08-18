@@ -10,7 +10,7 @@ namespace FinalProject.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("[controller]/[action]")]
+    [Route("[Controller]/[action]")]
     public class BasketController : ControllerBase
     {
         private readonly DbAccess _context;
@@ -20,15 +20,21 @@ namespace FinalProject.Controllers
             _context = context;
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        public string testbasket()
+        {
+            return "data";
+        }
+
 
         [HttpGet]
         [AllowAnonymous]
-
         public async Task<ActionResult<IEnumerable<BasketItemVM>>> AddItem(AddItemVM AddItemVM)
         {
             var basket = await _context.Baskets
                    .Include(b => b.BasketItems)
-                   .SingleOrDefaultAsync(b => b.Status == 1 && b.UserId == AddItemVM.UserId);
+                   .SingleOrDefaultAsync(b => b.Status == 1);
 
 
             if (basket != null)
@@ -101,6 +107,16 @@ namespace FinalProject.Controllers
                 return Ok(newbasket);
 
             }
+        }
+
+
+
+
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<ActionResult<string>> Test()
+        {
+            return "Testing";
         }
 
     }

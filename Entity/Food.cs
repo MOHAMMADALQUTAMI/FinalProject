@@ -7,5 +7,9 @@ namespace FinalProject.Entity
         public User Owner { get; set; }
         public float Price { get; set; }
         public string Description { get; set; }
+
+
+
+
     }
 }
