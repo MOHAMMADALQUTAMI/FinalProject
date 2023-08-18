@@ -16,6 +16,9 @@ namespace FinalProject.DAccess
         public DbSet<Food> Foods { get; set; }
         public DbSet<Basket> Baskets { get; set; }
         public DbSet<BasketItems> BasketItems { get; set; }
+        public DbSet<SubCategory> SubCategories { get; set; }
+        public DbSet<Category> categorys { get; set; }
+        public DbSet<Order> Orders { get; set; }
         public DbAccess(DbContextOptions<DbAccess> options) : base(options)
         {
 
