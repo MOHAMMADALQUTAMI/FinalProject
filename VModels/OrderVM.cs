@@ -1,9 +1,10 @@
 
-namespace FinalProject.Entity
-{
-    public class Order : BaseEntity
-    {
+using FinalProject.Entity;
 
+namespace FinalProject.VModels
+{
+    public class OrderVM : BaseEntity
+    {
         public int Phone { get; set; }
         public float TotalPrice { get; set; }
         public string BasketId { get; set; }
@@ -13,6 +14,6 @@ namespace FinalProject.Entity
         public User OwnerData { get; set; }
         public DateTime CreatedAt { get; set; }
 
-
     }
+
 }

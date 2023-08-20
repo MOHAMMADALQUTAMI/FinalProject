@@ -54,7 +54,7 @@ namespace FinalProject.Controllers
                             BasketId = basket.Id,
                             FoodId = food.Id,
                             Quantity = AddItemVM.Quantity,
-                            Price = food.Price
+                            Price = (float)food.Price
                         };
 
                         basket.BasketItems.Add(newBasketItem);
@@ -91,7 +91,7 @@ namespace FinalProject.Controllers
                         BasketId = newbasket.Id,
                         FoodId = food.Id,
                         Quantity = AddItemVM.Quantity,
-                        Price = food.Price
+                        Price = (float)food.Price
                     };
                     _context.BasketItems.Add(basketitem);
                 }

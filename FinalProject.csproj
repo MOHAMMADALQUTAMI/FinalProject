@@ -14,7 +14,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.SpaProxy" Version="7.0.5" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.5">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.10">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
@@ -37,6 +37,22 @@
     <Content Include="Repository\Repository.cs" />
     <Content Include="Repositories\Repository.cs" />
     <Content Include="Repositories\IRepository.cs" />
+    <Content Include=".gitignore" />
+    <Content Include="Entity\Category.cs" />
+    <Content Include="Entity\Order.cs" />
+    <Content Include="DAccess\DbAccessF.cs" />
+    <Content Include="VModels\FoodVM\FoodVM.cs" />
+    <Content Include="Controllers\BasketController.cs" />
+    <Content Include="Controllers\CustomerController.cs" />
+    <Content Include="Entity\Basket.cs" />
+    <Content Include="Controllers\ShopController.cs" />
+    <Content Include="VModels\OrderVM.cs" />
+    <Content Include="Entity\BasketItems.cs" />
+    <Content Include="VModels\BasketVM\BasketVM.cs" />
+    <Content Include="DAccess\DataClamis.cs" />
+    <Content Include="Entity\RegisterUser.cs" />
+    <Content Include="Entity\LoginUser.cs" />
+    <Content Include="appsettings.Development.json" />
   </ItemGroup>
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
     <!-- Ensure Node.js is installed -->
@@ -54,7 +70,7 @@
     <!-- Include the newly-built files in the publish output -->
     <ItemGroup>
       <DistFiles Include="$(SpaRoot)dist\**; $(SpaRoot)dist-server\**" />
-      <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+      <ResolvedFileToPublish Include="@(DistFiles-&gt;'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
         <RelativePath>wwwroot\%(RecursiveDir)%(FileName)%(Extension)</RelativePath>
         <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
         <ExcludeFromSingleFile>true</ExcludeFromSingleFile>

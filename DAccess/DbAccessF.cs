@@ -14,6 +14,8 @@ namespace FinalProject.DAccess
     {
 
         public DbSet<Food> Foods { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<User> Users {get;set;}
         public DbSet<Basket> Baskets { get; set; }
         public DbSet<BasketItems> BasketItems { get; set; }
         public DbAccess(DbContextOptions<DbAccess> options) : base(options)

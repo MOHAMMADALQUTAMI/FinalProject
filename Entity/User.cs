@@ -4,6 +4,6 @@ namespace FinalProject.Entity
 {
     public class User : IdentityUser
     {
-
+      
     }
 }

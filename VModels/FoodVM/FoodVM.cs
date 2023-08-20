@@ -1,10 +1,12 @@
+using FinalProject.Entity;
+
 namespace FinalProject.VModels
 {
-    public class FoodVM
+    public class FoodVM : BaseEntity
     {
-        public int ID { get; set; }
         public string Name { get; set; }
-        public string ShopId { get; set; }
+        public string OwnerId { get; set; }
+        public User Owner { get; set; }
         public double Price { get; set; }
         public string Description { get; set; }
     }
