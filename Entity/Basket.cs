@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace FinalProject.Entity
 {
-    public class Basket : BaseEntity
+    public class Basket : BaseEntity2
     {
 
 

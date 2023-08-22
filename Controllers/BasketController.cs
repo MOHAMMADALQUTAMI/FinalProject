@@ -1,123 +1,133 @@
-
-using Microsoft.AspNetCore.Mvc;
-using FinalProject.Entity;
-using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using FinalProject.DAccess;
+using FinalProject.Entity;
 using FinalProject.VModels;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace FinalProject.Controllers
 {
-    [Authorize]
-    [ApiController]
-    [Route("[Controller]/[action]")]
+    [Route("[controller]/[action]")]
     public class BasketController : ControllerBase
     {
-        private readonly DbAccess _context;
-
+        public readonly DbAccess _Context;
         public BasketController(DbAccess context)
         {
-            _context = context;
+            _Context = context;
+        }
+        /*
+        Register 
+        Login
+        */
+
+        //View Basket 
+        [HttpGet]
+        public async Task<List<Basket>> GetBasket()
+        {
+            return await _Context.Baskets.ToListAsync();
         }
 
-        [HttpGet]
-        [AllowAnonymous]
-        public string testbasket()
+
+        [HttpPost]
+        public async Task<ActionResult> AddItem(AddItemVM addItemVM)
         {
-            return "data";
+            return Ok();
         }
 
-
-        [HttpGet]
-        [AllowAnonymous]
-        public async Task<ActionResult<IEnumerable<BasketItemVM>>> AddItem(AddItemVM AddItemVM)
+        //  Add Item to basket
+        [HttpPost("addToBasket")]
+        public async Task<IActionResult> AddToBasket(BasketItems basketItem)
         {
-            var basket = await _context.Baskets
-                   .Include(b => b.BasketItems)
-                   .SingleOrDefaultAsync(b => b.Status == 1);
 
-
-            if (basket != null)
+            Basket userBasket = await _Context.Baskets.FirstOrDefaultAsync(b => b.Id == basketItem.BasketId);
+            if (userBasket == null)
             {
-                //Basket Does  Exisit
-
-
-                var existingBasketItem = basket.BasketItems
-                .FirstOrDefault(item => item.FoodId == AddItemVM.ItemId);
-                if (existingBasketItem != null)
+                userBasket = new Basket
                 {
-                    return Ok("Item already exists in the basket.");
-                }
-                else
-                {
-
-                    var food = await _context.Foods.FindAsync(AddItemVM.ItemId);
-
-                    if (food != null)
-                    {
-                        var newBasketItem = new BasketItems
-                        {
-                            BasketId = basket.Id,
-                            FoodId = food.Id,
-                            Quantity = AddItemVM.Quantity,
-                            Price = food.Price
-                        };
-
-                        basket.BasketItems.Add(newBasketItem);
-                        await _context.SaveChangesAsync();
-
-                        return Ok(existingBasketItem);
-                    }
-                    else
-                    {
-
-                        return NotFound("Food item not Available.");
-                    }
-                }
-
-
-            }
-            else
-            {
-                //Basket Does Not Exisit
-
-                var newbasket = new Basket
-                {
-                    UserId = AddItemVM.UserId,
+                    UserId = basketItem.Id.ToString(),
                     DateAdded = DateTime.Now,
-                    Status = 1,
-                    BasketItems = new List<BasketItems>()
+                    Status = 1
                 };
-
-                var food = await _context.Foods.FindAsync(AddItemVM.ItemId);
-                if (food != null)
-                {
-                    var basketitem = new BasketItems
-                    {
-                        BasketId = newbasket.Id,
-                        FoodId = food.Id,
-                        Quantity = AddItemVM.Quantity,
-                        Price = food.Price
-                    };
-                    _context.BasketItems.Add(basketitem);
-                }
-
-                _context.Baskets.Add(newbasket);
-                await _context.SaveChangesAsync();
-                return Ok(newbasket);
-
+                _Context.Baskets.Add(userBasket);
             }
+            userBasket.BasketItems.Add(basketItem);
+
+            await _Context.SaveChangesAsync();
+
+            return Ok();
         }
 
-
-
-
-        [AllowAnonymous]
-        [HttpGet]
-        public async Task<ActionResult<string>> Test()
+        // Update Item to basket
+        [HttpPut("updateBasketItem")]
+        public async Task<IActionResult> UpdateBasketItem(BasketItems updatedItem)
         {
-            return "Testing";
+            BasketItems existingItem = await _Context.BasketItems.FindAsync(updatedItem.Id);
+
+            if (existingItem == null)
+            {
+                return NotFound("Item not found");
+            }
+            existingItem.Quantity = updatedItem.Quantity;
+            existingItem.Price = updatedItem.Price;
+
+            await _Context.SaveChangesAsync();
+
+            return Ok();
+        }
+        //Remove Item from basket 
+
+        [HttpDelete("removeFromBasket/{itemId}")]
+        public async Task<IActionResult> RemoveFromBasket(int itemId)
+        {
+            BasketItems itemToRemove = await _Context.BasketItems.FindAsync(itemId);
+
+            if (itemToRemove == null)
+            {
+                return NotFound("Item not found");
+            }
+
+            _Context.BasketItems.Remove(itemToRemove);
+            await _Context.SaveChangesAsync();
+
+            return Ok();
         }
 
+        // View Orders 
+        [HttpGet("viewOrders/{userId}")]
+        public async Task<IActionResult> ViewOrders(string userId)
+        {
+            List<Order> orders = await _Context.Orders
+                .Where(o => o.OwnerId == userId)
+                .ToListAsync();
+
+            return Ok(orders);
+        }
+
+        // Create Order 
+        [HttpPost("createOrder")]
+        public async Task<IActionResult> CreateOrder(Order order)
+        {
+
+            Basket basket = await _Context.Baskets.Include(b => b.BasketItems)
+                .FirstOrDefaultAsync(b => b.Id == order.BasketId);
+
+            if (basket == null)
+            {
+                return NotFound("Basket not found");
+            }
+
+            float totalPrice = basket.BasketItems.Sum(item => item.Price);
+
+            order.TotalPrice = totalPrice;
+            order.CurrentStatus = "Pending";
+
+            _Context.Orders.Add(order);
+            await _Context.SaveChangesAsync();
+
+            return Ok();
+        }
     }
 }

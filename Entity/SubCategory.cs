@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace FinalProject.Entity
 {
-    public class SubCategory : BaseEntity
+    public class SubCategory : BaseEntity2
     {
         public string Name { get; set; }
-        public string CategoryId { get; set; }
+        public int CategoryId { get; set; }
         public Category Category { get; set; }
     }
 }

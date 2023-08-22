@@ -8,12 +8,14 @@ namespace FinalProject.DAccess
     public class DataClamis
     {
         // policies
-        public const string AddItemPolicyName = "AddItem";
-        public const string AddFoodPolicyName = "AddFood";
+        public const string IsUser_PolicyName = "IsUser";
+        public const string IsShop_PolicyName = "IsShop";
+        public const string IsAdmin_PolicyName = "IsAdmin";
 
         // claims
-        public const string AddItemClaimName = "AddItem";
-        public const string AddFoodClaimName = "AddFood";
+        public const string IsUser_ClaimName = "IsUser";
+        public const string IsShop_ClaimName = "IsShop";
+        public const string IsAdmin_ClaimName = "IsAdmin";
 
     }
 }

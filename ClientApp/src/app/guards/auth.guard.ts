@@ -18,10 +18,12 @@ export class AuthGuard implements CanActivate {
 
     console.log(route.routeConfig?.path); // Add this line
 
-    switch (route.routeConfig?.path) {
-      case 'basket': return true;
-      default: this.router.navigate(['login']); return false;
-    }
+    /* switch (route.routeConfig?.path) {
+       case 'basket': return true;
+       default: this.router.navigate(['login']); return true;
+     }*/
+
+    return true;
   }
 
 }

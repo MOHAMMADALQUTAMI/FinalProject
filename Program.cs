@@ -8,6 +8,8 @@ using System.Text;
 
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 var config = builder.Configuration;
 builder.Services.AddControllersWithViews();
 
@@ -46,7 +48,9 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization(o =>
 {
-    o.AddPolicy(DataClamis.AddItemPolicyName, policy => policy.RequireClaim(DataClamis.AddItemClaimName));
+    o.AddPolicy(DataClamis.IsAdmin_PolicyName, policy => policy.RequireClaim(DataClamis.IsAdmin_ClaimName));
+    o.AddPolicy(DataClamis.IsShop_PolicyName, policy => policy.RequireClaim(DataClamis.IsShop_PolicyName));
+    o.AddPolicy(DataClamis.IsUser_PolicyName, policy => policy.RequireClaim(DataClamis.IsUser_ClaimName));
 });
 
 
@@ -60,14 +64,17 @@ if (!app.Environment.IsDevelopment())
 }
 app.UseHttpsRedirection();
 app.UseAuthentication();
-app.UseAuthorization();
 app.UseStaticFiles();
 app.UseRouting();
+app.UseAuthorization();
 
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller}/{action=Index}/{id?}");
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.MapFallbackToFile("index.html");
 

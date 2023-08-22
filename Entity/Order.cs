@@ -1,7 +1,7 @@
 
 namespace FinalProject.Entity
 {
-    public class Order : BaseEntity
+    public class Order : BaseEntity2
     {
 
         public int Phone { get; set; }
@@ -9,7 +9,7 @@ namespace FinalProject.Entity
 
         public float TotalPrice { get; set; }
 
-        public string BasketId { get; set; }
+        public int BasketId { get; set; }
 
         public Basket Basket { get; set; }
 

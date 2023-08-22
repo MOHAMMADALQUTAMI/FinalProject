@@ -2,9 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-namespace FinalProject.ViewModel.CategoryVM
+
+namespace FinalProject.ViewModel
 {
-    public class SubCategoryVM
+    public class SubCategoriesVM
     {
         public int Id { get; set; }
         public string Name { get; set; }

@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using FinalProject.Entity;
-using FinalProject.ViewModel.CategoryVM;
 using FinalProject.ViewModel;
 using FinalProject.DAccess;
 using Microsoft.AspNetCore.Authorization;
@@ -34,6 +33,8 @@ namespace FinalProject.Controllers
                 Name = c.Name,
             }).ToList();
         }
+
+
         [AllowAnonymous]
 
         [HttpGet("{id}")]
@@ -47,6 +48,7 @@ namespace FinalProject.Controllers
             };
 
         }
+
         [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Post(CreateCategoryVM vM)
@@ -55,11 +57,13 @@ namespace FinalProject.Controllers
             {
                 Name = vM.Name,
             };
+
             await _dbcontext.AddAsync(category);
             await _dbcontext.SaveChangesAsync();
             return Ok();
 
         }
+
         [AllowAnonymous]
         [HttpDelete("{id}")]
         public async Task Delete(int id)

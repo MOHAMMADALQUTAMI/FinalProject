@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace FinalProject.ViewModel.CategoryVM
+namespace FinalProject.ViewModel
 {
     public class CreateCategoryVM
     {
