@@ -1,0 +1,39 @@
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-card {
+    width: 400px;
+    padding: 20px;
+    text-align: center;
+}
+
+.login-card h1 {
+    margin-bottom: 20px;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-field {
+    margin-bottom: 20px;
+}
+
+.checkboxes-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.checkbox {
+    flex-basis: calc(50% - 10px);
+    margin-bottom: 10px;
+}
+
+.login-button {
+    margin-top: 20px;
+}

@@ -1,0 +1,31 @@
+/* Start if navbar scss */
+
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1976d2;
+    color: #fff;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+
+.navbar-logo img {
+    height: 40px;
+}
+
+.navbar-links a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+.navbar-links a:hover {
+    color: #ff4081;
+}
+
+/* End if navbar scss */
