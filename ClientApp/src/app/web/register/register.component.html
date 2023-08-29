@@ -1,23 +1,29 @@
 <div class="login-container">
     <mat-card class="login-card">
-        <h1>Register New Account </h1>
-        <form class="login-form">
+        <h1>Register New Account</h1>
+        <form [formGroup]="registrationForm" class="login-form" (ngSubmit)="onSubmit()">
             <mat-form-field class="form-field">
-                <input matInput placeholder="Username" required>
+                <input matInput placeholder="Username" formControlName="username" required>
+            </mat-form-field>
+
+            <mat-form-field class="form-field">
+                <input matInput placeholder="Email" formControlName="email" required>
             </mat-form-field>
             <mat-form-field class="form-field">
-                <input matInput type="password" placeholder="Password" required>
+                <input matInput type="password" placeholder="Password" formControlName="password" required>
+            </mat-form-field>
+            <mat-form-field class="form-field">
+                <input matInput type="password" placeholder="ConfirmPassword" formControlName="confirmpassword"
+                    required>
             </mat-form-field>
             <div class="checkboxes-container">
-                <mat-checkbox class="checkbox">Is User</mat-checkbox>
-
-                <mat-checkbox class="checkbox">Is Shop</mat-checkbox>
+                <mat-checkbox class="checkbox" formControlName="isUser">Is User</mat-checkbox>
+                <mat-checkbox class="checkbox" formControlName="isShop">Is Shop</mat-checkbox>
             </div>
             <div class="checkboxes-container">
-                <mat-checkbox class="checkbox">IsAdmin</mat-checkbox>
-
+                <mat-checkbox class="checkbox" formControlName="isAdmin">IsAdmin</mat-checkbox>
             </div>
-            <button mat-raised-button color="primary" class="login-button">Register</button>
+            <button mat-raised-button color="primary" class="login-button" type="submit">Register</button>
         </form>
     </mat-card>
 </div>

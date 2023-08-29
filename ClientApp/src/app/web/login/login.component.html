@@ -1,17 +1,15 @@
 <div class="login-container">
     <mat-card class="login-card">
         <h1>Login</h1>
-        <form class="login-form">
+        <form [formGroup]="loginForm" class="login-form" (ngSubmit)="onSubmit()">
             <mat-form-field class="form-field">
-                <input matInput placeholder="Username" required>
+                <input matInput placeholder="Username" formControlName="username" required>
             </mat-form-field>
             <mat-form-field class="form-field">
-                <input matInput type="password" placeholder="Password" required>
+                <input matInput type="password" placeholder="Password" formControlName="password" required>
             </mat-form-field>
-
-            <button mat-raised-button color="primary" class="login-button">Login</button>
+            <button mat-raised-button color="primary" class="login-button" type="submit">Login</button>
         </form>
-
         <div class="register-link">
             Don't have an account? <a routerLink="/register">Register here</a>
         </div>

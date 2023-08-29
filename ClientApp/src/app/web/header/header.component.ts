@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-
+import { AuthService } from 'src/app/services/auth.service';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -7,4 +7,23 @@ import { Component } from '@angular/core';
 })
 export class HeaderComponent {
 
+  constructor(private auth: AuthService) {
+
+
+  }
+
+  permissioncheck(permissions: string[]) {
+
+    if (!this.auth.hasPermission(permissions)) {
+      return false;
+    }
+    return true;
+  }
+  checklogin() {
+    return !this.auth.isLoggedIn();
+  }
+
+  logout() {
+    this.auth.logout();
+  }
 }

@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Food } from 'src/app/interfaces/food';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-main-page',
@@ -6,48 +8,18 @@ import { Component } from '@angular/core';
   styleUrls: ['./main-page.component.scss']
 })
 export class MainPageComponent {
-  products = [
-    {
-      title: 'Product 1',
-      image: 'house_default.png',
-      price: '$19.99'
-    },
-    {
-      title: 'Product 2',
-      image: 'house_default.png',
-      price: '$29.99'
-    },
-    {
-      title: 'Product 3',
-      image: 'house_default.png',
-      price: '$9.99'
-    },
-    {
-      title: 'Product 3',
-      image: 'house_default.png',
-      price: '$9.99'
-    },
-    {
-      title: 'Product 3',
-      image: 'house_default.png',
-      price: '$9.99'
-    },
-    {
-      title: 'Product 3',
-      image: 'house_default.png',
-      price: '$9.99'
-    },
-    {
-      title: 'Product 3',
-      image: 'house_default.png',
-      price: '$9.99'
-    },
-    {
-      title: 'Product 3',
-      image: 'house_default.png',
-      price: '$9.99'
-    },
+  Food: Food[] = [];
 
-  ];
+  constructor(private user: UserService,) {
+    this.LoadFood();
+  }
+
+
+  LoadFood() {
+    this.user.GetFoods().subscribe((foods) => {
+      this.Food = foods;
+      console.log(foods);
+    });
+  }
 }
 

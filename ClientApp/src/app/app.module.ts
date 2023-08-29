@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
@@ -24,6 +24,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { LoginComponent } from './web/login/login.component';
 import { RegisterComponent } from './web/register/register.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { PermissionCheckService } from './guards/permission-check.service';
+import { CategoryComponent } from './web/admin/category/category.component';
+import { CommonModule } from '@angular/common';
+import { SubcategoryComponent } from './web/admin/subcategory/subcategory.component';
+import { MyproductsComponent } from './web/shop/myproducts/myproducts.component';
 
 
 @NgModule({
@@ -35,7 +41,10 @@ import { RegisterComponent } from './web/register/register.component';
     NotFoundComponent,
     ProductDetailComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    CategoryComponent,
+    SubcategoryComponent,
+    MyproductsComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -51,12 +60,31 @@ import { RegisterComponent } from './web/register/register.component';
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
+    FormsModule,
+    CommonModule,
+    ReactiveFormsModule,
     MatButtonModule,
+    MatSnackBarModule,
     MatCheckboxModule,
     RouterModule.forRoot([
-      { path: '', canActivate: [AuthGuard], component: MainPageComponent, },
+      { path: '', component: MainPageComponent, },
       { path: 'product', component: ProductDetailComponent, },
-      { path: 'login', canActivate: [AuthGuard], component: LoginComponent, },
+      { path: 'login', canActivate: [AuthGuard], component: LoginComponent },
+      {
+        path: 'category', canActivate: [PermissionCheckService], component: CategoryComponent,
+        data: { permissions: ['IsAdmin'] }
+      }
+      ,
+      {
+        path: 'subcategory', canActivate: [PermissionCheckService], component: SubcategoryComponent,
+        data: { permissions: ['IsAdmin'] }
+      }
+      ,
+      {
+        path: 'myproducts', canActivate: [PermissionCheckService], component: MyproductsComponent,
+        data: { permissions: ['IsShop'] }
+      }
+      ,
       { path: 'register', canActivate: [AuthGuard], component: RegisterComponent, },
       { path: '**', component: NotFoundComponent, },
     ])

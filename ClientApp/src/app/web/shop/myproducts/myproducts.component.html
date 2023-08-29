@@ -1,8 +1,8 @@
 <div class="product-list">
-    <mat-card class="product-card" *ngFor="let product of Food">
-        <img mat-card-image src="assets/house_default.png" alt="Product Image">
+    <mat-card class="product-card" *ngFor="let product of products">
+        <img mat-card-image src="assets/{{ product.image }}" alt="Product Image">
         <mat-card-content>
-            <mat-card-title>{{ product.name }}</mat-card-title>
+            <mat-card-title>{{ product.title }}</mat-card-title>
             <mat-card-subtitle>{{ product.price }}</mat-card-subtitle>
         </mat-card-content>
         <mat-card-actions>
@@ -10,9 +10,4 @@
             <button mat-button color="accent">Details</button>
         </mat-card-actions>
     </mat-card>
-</div>
-
-<div *ngIf="Food.length < 1" class="not-found-container">
-    <h1>0</h1>
-    <p>Oops! There is Nothing in products yet </p>
 </div>

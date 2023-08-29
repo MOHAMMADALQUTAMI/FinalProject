@@ -3,29 +3,28 @@
         <img src="assets/logo.png " routerLink="/" alt="Logo">
     </div>
     <div class="navbar-links">
-        <button mat-button [matMenuTriggerFor]="ownerMenu">Shop Owner</button>
+        <button mat-button *ngIf="permissioncheck(['IsShop'])" [matMenuTriggerFor]="ownerMenu">Shop Owner</button>
+
         <mat-menu #ownerMenu="matMenu">
-            <button mat-menu-item routerLink="/demo">Option 1</button>
-            <button mat-menu-item routerLink="/demo">Option 2</button>
-            <button mat-menu-item routerLink="/demo">Option 3</button>
+            <a mat-menu-item routerLink="/myproducts"> You Products </a>
+
         </mat-menu>
 
-        <button mat-button [matMenuTriggerFor]="customerMenu">Customer</button>
+        <button mat-button *ngIf="permissioncheck(['IsUser'])" [matMenuTriggerFor]="customerMenu">Customer</button>
+
         <mat-menu #customerMenu="matMenu">
-            <button mat-menu-item routerLink="/demo">Option 1</button>
-            <button mat-menu-item routerLink="/demo">Option 2</button>
-            <button mat-menu-item routerLink="/demo">Option 3</button>
+
         </mat-menu>
 
-        <button mat-button [matMenuTriggerFor]="adminMenu">Admin</button>
+        <button mat-button *ngIf="permissioncheck(['IsAdmin'])" [matMenuTriggerFor]="adminMenu">Admin</button>
+
         <mat-menu #adminMenu="matMenu">
-            <a mat-menu-item routerLink="/about">About</a>
-            <button mat-menu-item routerLink="/product">Option 1</button>
-            <button mat-menu-item routerLink="/demo">Option 2</button>
-            <button mat-menu-item routerLink="/demo">Option 3</button>
+            <a mat-menu-item routerLink="/category"> Categorys </a>
+            <a mat-menu-item routerLink="/subcategory"> Subcategory </a>
         </mat-menu>
 
-        <button mat-button routerLink="/login">Login</button>
+        <button *ngIf="checklogin()" mat-button routerLink="/login">Login</button>
+        <button *ngIf="!checklogin()" (click)="logout()" mat-button routerLink="">Logout</button>
 
     </div>
 </mat-toolbar>

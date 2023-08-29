@@ -11,7 +11,7 @@ using FinalProject.ViewModel;
 namespace FinalProject.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]/[action]")]
     public class SubCategoryController : ControllerBase
     {
         private readonly DbAccess _context;
@@ -20,6 +20,7 @@ namespace FinalProject.Controllers
         {
             _context = context;
         }
+
         [HttpGet]
         public async Task<IEnumerable<SubCategoriesVM>> GetSubCategories()
         {

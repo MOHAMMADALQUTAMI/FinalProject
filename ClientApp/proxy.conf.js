@@ -7,7 +7,10 @@ const PROXY_CONFIG = [
   {
     context: [
       "/basket",
-
+      "/user",
+      "/category",
+      "/subcategory",
+      "/food",
     ],
     target: target,
     secure: false,

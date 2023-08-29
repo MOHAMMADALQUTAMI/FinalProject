@@ -13,7 +13,7 @@ namespace FinalProject.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("api/[controller]/[action]")]
+    [Route("[controller]/[action]")]
     public class CategoryController : ControllerBase
     {
         private readonly DbAccess _dbcontext;
@@ -51,16 +51,20 @@ namespace FinalProject.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> Post(CreateCategoryVM vM)
+        public async Task<IActionResult> Post([FromBody] CreateCategoryVM vM)
         {
-            var category = new Category
+            if (ModelState.IsValid)
             {
-                Name = vM.Name,
-            };
+                var category = new Category
+                {
+                    Name = vM.Name,
+                };
 
-            await _dbcontext.AddAsync(category);
-            await _dbcontext.SaveChangesAsync();
-            return Ok();
+                await _dbcontext.AddAsync(category);
+                await _dbcontext.SaveChangesAsync();
+                return Ok();
+            }
+            return BadRequest(ModelState);
 
         }
 
