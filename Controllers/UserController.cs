@@ -102,10 +102,12 @@ namespace FinalProject.Controllers
                         ModelState.AddModelError("Login", "Invalid login attempt.");
                         return BadRequest(ModelState);
                     }
-
                     var claims = await _userManager.GetClaimsAsync(user);
                     var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JwtSettings:SecretKey"]!));
                     var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+                    var UserIdClaim = new Claim("UserId", user.Id.ToString());
+                    claims.Add(UserIdClaim);
 
                     var token = new JwtSecurityToken(
                         issuer: _config["JwtSettings:Issuer"],

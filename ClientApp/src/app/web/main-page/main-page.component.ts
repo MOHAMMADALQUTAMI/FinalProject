@@ -18,7 +18,6 @@ export class MainPageComponent {
   LoadFood() {
     this.user.GetFoods().subscribe((foods) => {
       this.Food = foods;
-      console.log(foods);
     });
   }
 }

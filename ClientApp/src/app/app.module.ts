@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
@@ -30,6 +30,9 @@ import { CategoryComponent } from './web/admin/category/category.component';
 import { CommonModule } from '@angular/common';
 import { SubcategoryComponent } from './web/admin/subcategory/subcategory.component';
 import { MyproductsComponent } from './web/shop/myproducts/myproducts.component';
+import { ProductEditModalComponentComponent } from './web/shop/product-edit-modal-component/product-edit-modal-component.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { AuthorizationInterceptor } from './interceptor/authorization.interceptor';
 
 
 @NgModule({
@@ -44,7 +47,8 @@ import { MyproductsComponent } from './web/shop/myproducts/myproducts.component'
     RegisterComponent,
     CategoryComponent,
     SubcategoryComponent,
-    MyproductsComponent
+    MyproductsComponent,
+    ProductEditModalComponentComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -66,6 +70,7 @@ import { MyproductsComponent } from './web/shop/myproducts/myproducts.component'
     MatButtonModule,
     MatSnackBarModule,
     MatCheckboxModule,
+    MatDialogModule,
     RouterModule.forRoot([
       { path: '', component: MainPageComponent, },
       { path: 'product', component: ProductDetailComponent, },
@@ -89,7 +94,9 @@ import { MyproductsComponent } from './web/shop/myproducts/myproducts.component'
       { path: '**', component: NotFoundComponent, },
     ])
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthorizationInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

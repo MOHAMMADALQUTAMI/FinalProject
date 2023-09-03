@@ -17,4 +17,10 @@ export class UserService {
   GetFoods(): Observable<Food[]> {
     return this.http.get<Food[]>(this.baseUrl + 'food/getfood');
   }
+
+  GetOwnerFoods(): Observable<Food[]> {
+    return this.http.get<Food[]>(this.baseUrl + 'food/getfoodbyiwner');
+  }
+
+
 }

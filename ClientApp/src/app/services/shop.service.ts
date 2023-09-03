@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Category } from '../interfaces/Category';
 import { CreateSubcategory } from '../interfaces/createsubcategory';
 import { SubCategory } from '../interfaces/subcategory';
+import { Food } from '../interfaces/food';
 
 @Injectable({
   providedIn: 'root'
@@ -14,5 +15,9 @@ export class ShopService {
 
   GetProductsByUser(): Observable<Category[]> {
     return this.http.get<Category[]>(this.baseUrl + 'category/getcategory');
+  }
+
+  Update_Food(NewData: Food): Observable<Food> {
+    return this.http.put<Food>(this.baseUrl + 'food/updatefood', NewData);
   }
 }
