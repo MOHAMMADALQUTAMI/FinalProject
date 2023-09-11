@@ -7,7 +7,7 @@ namespace FinalProject.ViewModel
 {
     public class SubCategoriesVM
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
         public CategoryVM Category { get; set; }
     }

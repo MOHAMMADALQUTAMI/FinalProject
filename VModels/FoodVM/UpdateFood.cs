@@ -7,7 +7,7 @@ namespace FinalProject.VModels.UpdateFood
 {
     public class UpdateFood
     {
-        public int Id { get; set; }
+        public String Id { get; set; }
 
         public string Name { get; set; }
         public float Price { get; set; }

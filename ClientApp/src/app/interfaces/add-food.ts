@@ -1,8 +1,5 @@
-export interface Food {
-    id: string;
+export interface AddFood {
     name: string;
-    userid: string;
     price: number;
     description: string;
-
 }

@@ -49,6 +49,7 @@ namespace FinalProject.Controllers
                 var user = new User { UserName = model.Username, Email = model.Email };
                 // register user
                 var result = await _userManager.CreateAsync(user, model.Password);
+
                 if (result.Succeeded)
                 {
                     var claims = new List<Claim>();
@@ -84,6 +85,9 @@ namespace FinalProject.Controllers
 
             return BadRequest(ModelState);
         }
+
+
+
 
         [HttpPost]
         [AllowAnonymous]

@@ -13,6 +13,9 @@
         <button mat-button *ngIf="permissioncheck(['IsUser'])" [matMenuTriggerFor]="customerMenu">Customer</button>
 
         <mat-menu #customerMenu="matMenu">
+            <a mat-menu-item routerLink=""> All Foods </a>
+            <a mat-menu-item routerLink=""> Basket </a>
+            <a mat-menu-item routerLink=""> Orders </a>
 
         </mat-menu>
 

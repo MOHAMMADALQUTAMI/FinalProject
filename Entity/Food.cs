@@ -1,6 +1,6 @@
 namespace FinalProject.Entity
 {
-    public class Food : BaseEntity2
+    public class Food : BaseEntity
     {
         public string Name { get; set; }
         public string UserId { get; set; }

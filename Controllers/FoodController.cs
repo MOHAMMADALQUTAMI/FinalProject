@@ -1,18 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using FinalProject.Entity;
 using FinalProject.DAccess;
 using FinalProject.VModels;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.HttpResults;
 using FinalProject.VModels.UpdateFood;
-using System.IdentityModel.Tokens.Jwt;
+using FinalProject.Interfaces;
+
 
 namespace FinalProject.Controllers
+
 {
     [Authorize]
     [ApiController]
@@ -20,9 +17,12 @@ namespace FinalProject.Controllers
     public class FoodController : ControllerBase
     {
         private readonly DbAccess _dbcontext;
-        public FoodController(DbAccess dbcontext)
+        private readonly IJwtService _jwtService;
+        public FoodController(DbAccess dbcontext, IJwtService jwtService)
         {
             _dbcontext = dbcontext;
+            _jwtService = jwtService;
+
         }
 
 
@@ -38,35 +38,41 @@ namespace FinalProject.Controllers
                 Name = e.Name,
                 Price = e.Price,
                 Description = e.Description,
-                UserId = e.UserId
-
+                UserId = e.UserId,
+                User = new UserVM
+                {
+                    Id = e.User.Id,
+                    UserName = e.User.UserName,
+                }
             }).ToList();
 
         }
 
-        [Authorize]
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<FoodVM>>> GetFoodByOwner()
         {
 
-            var userIdClaim = User.FindFirst("UserId");
-
-            if (userIdClaim == null)
+            if (HttpContext.Request.Headers.TryGetValue("Authorization", out var token))
             {
-                return Unauthorized("UserId claim not found in the token.");
+                var jwtToken = token.ToString().Replace("Bearer ", "");
+                var userId = _jwtService.GetUserIdFromToken(jwtToken);
+
+                var foods = await _dbcontext.Foods.Where(food => food.UserId == userId).Include(p => p.User).ToListAsync();
+                return foods.Select(e => new FoodVM
+                {
+                    Id = e.Id,
+                    Name = e.Name,
+                    Price = e.Price,
+                    Description = e.Description,
+                    UserId = e.UserId
+
+                }).ToList();
             }
-            string userId = userIdClaim.Value;
-
-            var foods = await _dbcontext.Foods.Where(food => food.UserId == userId).Include(p => p.User).ToListAsync();
-            return foods.Select(e => new FoodVM
+            else
             {
-                Id = e.Id,
-                Name = e.Name,
-                Price = e.Price,
-                Description = e.Description,
-                UserId = e.UserId
-
-            }).ToList();
+                return BadRequest();
+            }
 
         }
 
@@ -88,47 +94,54 @@ namespace FinalProject.Controllers
                 {
 
                 }
-
-
             };
 
         }
 
-        [Authorize]
+        [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> AddFood(AddFoodVM model)
+        public async Task<ActionResult<FoodVM>> AddFood([FromBody] AddFoodVM model)
         {
-            var foods = new Food
+            if (HttpContext.Request.Headers.TryGetValue("Authorization", out var token))
             {
-                Name = model.Name,
-                UserId = model.UserId,
-                Price = model.Price,
-                Description = model.Description
-            };
-            _dbcontext.Foods.Add(foods);
-            await _dbcontext.SaveChangesAsync();
+                var jwtToken = token.ToString().Replace("Bearer ", "");
+                var userId = _jwtService.GetUserIdFromToken(jwtToken);
 
-            return Ok();
-        }
+                if (ModelState.IsValid)
+                {
+                    Food foods = new Food
+                    {
+                        Name = model.Name,
+                        UserId = userId,
+                        Price = model.Price,
+                        Description = model.Description
+                    };
+                    _dbcontext.Foods.Add(foods);
+                    await _dbcontext.SaveChangesAsync();
 
-
-        private string GetUserIdFromToken(string jwtToken)
-        {
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var token = tokenHandler.ReadJwtToken(jwtToken);
-
-            var userIdClaim = token.Claims.FirstOrDefault(claim => claim.Type == "UserId");
-
-            if (userIdClaim != null)
-            {
-                return userIdClaim.Value;
+                    var foodVM = new FoodVM
+                    {
+                        Id = foods.Id,
+                        Name = foods.Name,
+                        UserId = foods.UserId,
+                        Price = foods.Price,
+                        Description = foods.Description
+                    };
+                    return Ok(foodVM);
+                }
+                else
+                {
+                    return BadRequest(ModelState);
+                }
             }
             else
             {
-                throw new ApplicationException("UserId claim not found in JWT token.");
+                return BadRequest("Authorization header not found.");
             }
         }
+
+
+
 
 
         [AllowAnonymous]
@@ -137,17 +150,12 @@ namespace FinalProject.Controllers
         {
             if (HttpContext.Request.Headers.TryGetValue("Authorization", out var token))
             {
-                // Remove "Bearer " from the token to get the actual JWT token
                 var jwtToken = token.ToString().Replace("Bearer ", "");
-
-                // Extract UserId from the JWT token
-                var userId = GetUserIdFromToken(jwtToken);
+                var userId = _jwtService.GetUserIdFromToken(jwtToken);
 
                 var foods = await _dbcontext.Foods.FindAsync(model.Id);
                 if (foods != null)
                 {
-                    string currentUserId = Convert.ToString(HttpContext.User.FindFirst("UserId"));
-
                     if (foods.UserId == userId)
                     {
 
@@ -155,6 +163,7 @@ namespace FinalProject.Controllers
                         foods.Name = model.Name;
                         foods.Price = model.Price;
                         foods.Description = model.Description;
+                        //foods.ModifiedBy = userId;
                         await _dbcontext.SaveChangesAsync();
 
                         return Ok();

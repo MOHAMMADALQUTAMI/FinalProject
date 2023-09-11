@@ -1,0 +1,16 @@
+<form class="mat-form" [formGroup]="addfood">
+    <mat-form-field class="full-width">
+        <input matInput placeholder="Name" formControlName="name">
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+        <input matInput placeholder="Price" formControlName="price">
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+        <textarea matInput placeholder="Description" formControlName="description"></textarea>
+    </mat-form-field>
+
+    <button type="button" (click)="add_food()" class="btn btn-primary">Save</button>
+
+</form>

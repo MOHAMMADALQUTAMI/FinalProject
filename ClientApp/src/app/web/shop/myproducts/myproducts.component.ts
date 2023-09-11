@@ -3,6 +3,7 @@ import { Food } from 'src/app/interfaces/food';
 import { UserService } from 'src/app/services/user.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ProductEditModalComponentComponent } from '../product-edit-modal-component/product-edit-modal-component.component';
+import { AddfoodComponent } from '../addfood/addfood.component';
 @Component({
   selector: 'app-myproducts',
   templateUrl: './myproducts.component.html',
@@ -22,14 +23,26 @@ export class MyproductsComponent {
       data: product,
     });
 
+
+
     dialogRef.afterClosed().subscribe(result => {
       // Handle any logic after the modal is closed, e.g., refresh the product list
-      console.log('The dialog was closed');
+      this.LoadFood();
+    });
+  }
+
+  openAddModal(): void {
+    const dialogRef = this.dialog.open(AddfoodComponent, {
+      width: '300px',
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      // Handle any logic after the modal is closed, e.g., refresh the product list
+      this.LoadFood();
     });
   }
 
   LoadFood() {
-    this.user.GetFoods().subscribe((foods) => {
+    this.user.GetOwnerFoods().subscribe((foods) => {
       console.log(foods);
       this.Food = foods;
     });

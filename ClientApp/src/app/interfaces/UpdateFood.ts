@@ -1,5 +1,5 @@
 export interface UpdateFood {
-    Id: number;
+    Id: string;
     Name: string;
     Price: number;
     Description: string;

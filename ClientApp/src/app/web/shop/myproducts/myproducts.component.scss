@@ -29,3 +29,26 @@
 .product-card img {
     max-width: 100%;
 }
+
+.button-group {
+    display: flex;
+    flex-direction: row;
+    /* Stack buttons vertically */
+    gap: 16px;
+    /* Adjust the spacing between buttons */
+    justify-content: center;
+    /* Center buttons horizontally */
+    align-items: center;
+    /* Center buttons vertically */
+}
+
+
+/* Custom button styles */
+button {
+    min-width: 120px;
+    /* Adjust the button width as needed */
+    padding: 8px 16px;
+    /* Adjust the button padding as needed */
+    text-transform: none;
+    /* Remove uppercase transformation */
+}

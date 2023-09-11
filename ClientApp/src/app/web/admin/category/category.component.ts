@@ -13,6 +13,7 @@ export class CategoryComponent implements OnInit {
   categoryForm: FormGroup;
 
   constructor(private adminservice: AdminService, private formBuilder: FormBuilder) {
+
     this.categoryForm = this.formBuilder.group({
       name: ['', Validators.required]
     });

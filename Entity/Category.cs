@@ -1,6 +1,6 @@
 namespace FinalProject.Entity
 {
-    public class Category : BaseEntity2
+    public class Category : BaseEntity
     {
         public string Name { get; set; }
     }

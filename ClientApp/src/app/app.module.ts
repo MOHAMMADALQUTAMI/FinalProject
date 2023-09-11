@@ -7,7 +7,7 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 
 import { AuthGuard } from './guards/auth.guard';
-import { MainPageComponent } from './web/main-page/main-page.component';
+import { MainPageComponent } from './web/main-page/MainPageComponent';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -33,6 +33,7 @@ import { MyproductsComponent } from './web/shop/myproducts/myproducts.component'
 import { ProductEditModalComponentComponent } from './web/shop/product-edit-modal-component/product-edit-modal-component.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { AuthorizationInterceptor } from './interceptor/authorization.interceptor';
+import { AddfoodComponent } from './web/shop/addfood/addfood.component';
 
 
 @NgModule({
@@ -48,7 +49,8 @@ import { AuthorizationInterceptor } from './interceptor/authorization.intercepto
     CategoryComponent,
     SubcategoryComponent,
     MyproductsComponent,
-    ProductEditModalComponentComponent
+    ProductEditModalComponentComponent,
+    AddfoodComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

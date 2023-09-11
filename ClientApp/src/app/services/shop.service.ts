@@ -2,9 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Category } from '../interfaces/Category';
-import { CreateSubcategory } from '../interfaces/createsubcategory';
-import { SubCategory } from '../interfaces/subcategory';
 import { Food } from '../interfaces/food';
+import { AddFood } from '../interfaces/add-food';
 
 @Injectable({
   providedIn: 'root'
@@ -19,5 +18,9 @@ export class ShopService {
 
   Update_Food(NewData: Food): Observable<Food> {
     return this.http.put<Food>(this.baseUrl + 'food/updatefood', NewData);
+  }
+
+  Add_food(NewData: AddFood): Observable<Food> {
+    return this.http.post<Food>(this.baseUrl + 'food/addfood', NewData);
   }
 }

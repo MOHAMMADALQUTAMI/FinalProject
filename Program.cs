@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using FinalProject.Interfaces;
+using FinalProject.Services;
 using System.Text;
 
 
@@ -12,6 +14,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 var config = builder.Configuration;
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IJwtService, JwtService>();
 
 
 builder.Services.AddDbContext<DbAccess>(options =>

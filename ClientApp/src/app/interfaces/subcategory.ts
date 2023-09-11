@@ -1,7 +1,7 @@
 import { Category } from "./Category";
 
 export interface SubCategory {
-    id: number;
+    id: string;
     name: string;
     category: Category;
 }

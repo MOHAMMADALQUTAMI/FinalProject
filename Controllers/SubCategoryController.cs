@@ -38,7 +38,7 @@ namespace FinalProject.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<SubCategoriesVM> Get(int id)
+        public async Task<SubCategoriesVM> Get(string id)
         {
             var SubCategory = await _context.SubCategories.Include(s => s.Category).SingleOrDefaultAsync(SubCategories => SubCategories.Id == id);
             return new SubCategoriesVM

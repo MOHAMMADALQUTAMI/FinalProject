@@ -1,4 +1,13 @@
+<div class="button-group">
+    <button mat-raised-button color="primary" (click)="openAddModal()">
+        <mat-icon>home</mat-icon>
+        Add Food
+    </button>
+
+</div>
 <div class="product-list">
+
+
     <mat-card class="product-card" *ngFor="let product of Food">
         <img mat-card-image src="assets/house_default.png" alt="Product Image">
         <mat-card-content>
